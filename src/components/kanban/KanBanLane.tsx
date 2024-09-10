@@ -3,12 +3,15 @@ import TaskCard from "./TaskCard";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Lane } from "@/types/lane";
-import { useState, useRef, useEffect } from "react";
-import Input from "../common/input/Input";
+import { useState } from "react";
+import useLaneStore from "@/store/lane.store";
+import { toast } from "react-toastify";
 
 const KanBanLane = ({ lane }: { lane: Lane }) => {
   const [isLaneTitleEditable, setIsLaneTitleEditable] = useState(false);
   const [laneName, setLaneName] = useState(lane.name);
+  const [tempLaneName, setTempLaneName] = useState(lane.name);
+  const { setLanes } = useLaneStore();
 
   const {
     setNodeRef,
@@ -31,21 +34,44 @@ const KanBanLane = ({ lane }: { lane: Lane }) => {
   };
 
   const handleEditLaneName = () => {
+    setTempLaneName(laneName);
     setIsLaneTitleEditable(true);
   };
 
   const handleBlur = () => {
     setIsLaneTitleEditable(false);
+    setTempLaneName(laneName);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setLaneName(e.target.value);
+    setTempLaneName(e.target.value);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (tempLaneName.trim() !== "") {
+        setLaneName(tempLaneName);
+        setLanes((prev) =>
+          prev.map((currentLane) =>
+            currentLane.id === lane.id
+              ? { ...currentLane, name: tempLaneName }
+              : currentLane
+          )
+        );
+        if (tempLaneName !== lane.name) {
+          toast.success("Title updated successfully", { autoClose: 1500 });
+        }
+      } else {
+        toast.error("Lane name can not be empty!", { autoClose: 1500 });
+      }
+      setIsLaneTitleEditable(false);
+    }
   };
 
   if (isDragging) {
     return (
       <div
-        className="h-full min-h-auto min-w-[350px] relative bg-slate-400 bg-opacity-10"
+        className="h-full min-h-auto min-w-[350px] relative bg-slate-400 rounded-lg bg-opacity-10 border-2 border-dashed border-primary"
         ref={setNodeRef}
         style={style}
       />
@@ -64,30 +90,37 @@ const KanBanLane = ({ lane }: { lane: Lane }) => {
         {...listeners}
       >
         <div className="flex gap-3 items-center">
+          <h3 className="font-semibold text-slate-400 text-sm">{0}</h3>
           {!isLaneTitleEditable ? (
-            <h3
-              className="font-semibold text-slate-400 text-sm cursor-text"
-              onClick={handleEditLaneName}
-            >
-              {laneName}
-            </h3>
+            <button onClick={handleEditLaneName}>
+              <h3 className="font-semibold text-slate-400 text-sm cursor-text uppercase">
+                {laneName}
+              </h3>
+            </button>
           ) : (
             <div>
               <input
                 className="bg-white rounded outline-none text-sm font-semibold text-slate-400"
-                value={laneName}
+                value={tempLaneName}
                 onChange={handleChange}
                 onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
                 autoFocus
               />
             </div>
           )}
-          <h3 className="font-semibold text-slate-400 text-sm">{0}</h3>
         </div>
         <span className="text-slate-400 font-bold cursor-pointer">
           <PlusIcon />
         </span>
       </div>
+
+      <div className="w-full text-primary flex gap-4 items-center py-1 justify-center rounded-xl border-2 border-dashed border-primary text-center bg-secondary">
+        <PlusIcon />
+        Add Task
+      </div>
+      <TaskCard />
+      <TaskCard />
       <TaskCard />
     </div>
   );

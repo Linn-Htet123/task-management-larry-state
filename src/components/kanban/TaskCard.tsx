@@ -3,7 +3,7 @@ import StatusPill from "../common/pill/StatusPill";
 
 const TaskCard = () => {
   return (
-    <div>
+    <div className="my-3">
       <Card className="w-full rounded-md shadow-sm border border-slate-100">
         <div className="mb-3">
           <p className="font-semibold text-slate-700 pr-5 mb-2 text-[18px] -tracking-tighter leading-tight">
