@@ -1,0 +1,57 @@
+:root {
+  --primary: #552cf6;
+  --secondary: #ebe7ff;
+  --accent-1: #fcd3e1;
+  --accent-2: #d8f1ff;
+  --accent-3: #daf8e7;
+  --accent-4: #ffe4b5;
+  --accent-5: #e2b2ff;
+  --accent-6: #b5e3ff;
+  --accent-7: #ffd5e5;
+  --accent-8: #c8facd;
+  --light: #f6f7fa;
+}
+body {
+  @apply bg-light;
+}
+
+* {
+  @apply font-sans;
+}
+
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--secondary);
+  border-radius: 20px;
+  border: 3px solid #eee;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--secondary) var(--light);
+}
+
+/* Hide horizontal scrollbar but allow scrolling */
+.scrollable-container {
+  overflow-x: auto; /* Enable horizontal scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+/* Hide horizontal scrollbar */
+.scrollable-container::-webkit-scrollbar {
+  height: 0; /* Hide horizontal scrollbar */
+}
+
+.scrollable-container {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
