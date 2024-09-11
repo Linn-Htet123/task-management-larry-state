@@ -1,17 +1,20 @@
 import PlusIcon from "@/icons/PlusIcon";
 import TaskCard from "./TaskCard";
-import { useSortable } from "@dnd-kit/sortable";
+import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Lane } from "@/types/lane";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import useLaneStore from "@/store/lane.store";
 import { toast } from "react-toastify";
+import { Task } from "@/types/task";
 
-const KanBanLane = ({ lane }: { lane: Lane }) => {
+const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
   const [isLaneTitleEditable, setIsLaneTitleEditable] = useState(false);
   const [laneName, setLaneName] = useState(lane.name);
   const [tempLaneName, setTempLaneName] = useState(lane.name);
   const { setLanes } = useLaneStore();
+
+  const taskIDs = useMemo(() => tasks?.map((task) => task.id) || [], [tasks]);
 
   const {
     setNodeRef,
@@ -90,7 +93,9 @@ const KanBanLane = ({ lane }: { lane: Lane }) => {
         {...listeners}
       >
         <div className="flex gap-3 items-center">
-          <h3 className="font-semibold text-slate-400 text-sm">{0}</h3>
+          <h3 className="font-semibold text-slate-400 text-sm">
+            {tasks.length}
+          </h3>
           {!isLaneTitleEditable ? (
             <button onClick={handleEditLaneName}>
               <h3 className="font-semibold text-slate-400 text-sm cursor-text uppercase">
@@ -115,13 +120,20 @@ const KanBanLane = ({ lane }: { lane: Lane }) => {
         </span>
       </div>
 
-      <div className="w-full text-primary flex gap-4 items-center py-1 justify-center rounded-xl border-2 border-dashed border-primary text-center bg-secondary">
+      <div className="w-full text-primary flex gap-4 items-center py-1 justify-center rounded-xl border-2 border-dotted border-primary text-center bg-secondary cursor-pointer">
         <PlusIcon />
         Add Task
       </div>
-      <TaskCard />
-      <TaskCard />
-      <TaskCard />
+      <SortableContext items={taskIDs}>
+        {tasks.map((task) => {
+          if (task.laneId !== lane.id) return null;
+          return (
+            <div className="w-[350px]" key={task.id}>
+              <TaskCard task={task} />
+            </div>
+          );
+        })}
+      </SortableContext>
     </div>
   );
 };

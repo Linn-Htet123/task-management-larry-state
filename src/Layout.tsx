@@ -9,6 +9,9 @@ const Layout = () => {
         <Sidebar title="TASK MANAGEMENT" menuItems={menuItems()} />
       </aside>
       <main className="flex-1 overflow-x-hidden">
+        <div className="w-full h-[60px] p-4 bg-white shadow-sm sticky top-0">
+          Projects
+        </div>
         <Outlet />
       </main>
     </div>

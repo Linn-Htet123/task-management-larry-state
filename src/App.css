@@ -2,13 +2,21 @@
   --primary: #552cf6;
   --secondary: #ebe7ff;
   --accent-1: #fcd3e1;
+  --accent-1-text: #b78fa0;
   --accent-2: #d8f1ff;
+  --accent-2-text: #7bbbdb;
   --accent-3: #daf8e7;
+  --accent-3-text: #7ac49f;
   --accent-4: #ffe4b5;
+  --accent-4-text: #c19b77;
   --accent-5: #e2b2ff;
+  --accent-5-text: #9565ba;
   --accent-6: #b5e3ff;
+  --accent-6-text: #6499bf;
   --accent-7: #ffd5e5;
+  --accent-7-text: #c5668b;
   --accent-8: #c8facd;
+  --accent-8-text: #64a86b;
   --light: #f6f7fa;
 }
 body {
@@ -37,7 +45,7 @@ body {
 
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--secondary) var(--light);
+  scrollbar-color: rgba(205, 130, 255, 0.721) var(--light);
 }
 
 /* Hide horizontal scrollbar but allow scrolling */

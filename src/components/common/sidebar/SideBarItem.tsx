@@ -9,8 +9,8 @@ const SidebarItem = ({ icon, label, onClick, active }: SideBarItemType) => {
       className={`flex items-center w-full p-3 rounded-lg font-normal text-start leading-tight transition-all
           ${
             active
-              ? "bg-light text-primary"
-              : "hover:bg-light hover:bg-opacity-80 text-gray-700"
+              ? "bg-secondary text-primary"
+              : "hover:bg-secondary hover:bg-opacity-80 text-gray-700"
           }
           focus:bg-light focus:bg-opacity-80 active:bg-light active:bg-opacity-80 
           hover:text-primary focus:text-primary active:text-primary outline-none`}

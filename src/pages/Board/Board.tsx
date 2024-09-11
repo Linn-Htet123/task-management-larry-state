@@ -18,18 +18,16 @@ const Board = () => {
     <div className="flex-1 flex flex-col h-full">
       <AddLaneModal isOpen={isOpenModal} toggleModal={toggleLaneModal} />
       <Card className="rounded-none border border-slate-100">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle className="text-3xl">Board</CardTitle>
-            <Button
-              className="flex items-center gap-3 bg-primary"
-              onClick={toggleLaneModal}
-            >
-              <PlusIcon />
-              New Lane
-            </Button>
-          </div>
-        </CardHeader>
+        <div className="flex justify-between items-center">
+          <CardTitle className="text-3xl">Board</CardTitle>
+          <Button
+            className="flex items-center gap-3 bg-primary"
+            onClick={toggleLaneModal}
+          >
+            <PlusIcon />
+            New Lane
+          </Button>
+        </div>
       </Card>
       <KanBanBoard />
     </div>

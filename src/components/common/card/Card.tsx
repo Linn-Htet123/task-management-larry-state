@@ -11,7 +11,7 @@ interface CardProps {
 
 const Card: React.FC<CardProps> = ({ title, children, className = "" }) => {
   return (
-    <div className={`bg-white rounded-lg overflow-hidden ${className}`}>
+    <div className={`bg-white rounded-lg${className}`}>
       {title && (
         <CardHeader>
           <CardTitle>{title}</CardTitle>
