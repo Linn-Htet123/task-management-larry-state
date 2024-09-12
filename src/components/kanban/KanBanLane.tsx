@@ -7,6 +7,8 @@ import { useMemo, useState } from "react";
 import useLaneStore from "@/store/lane.store";
 import { toast } from "react-toastify";
 import { Task } from "@/types/task";
+import EllipsisVertical from "@/icons/EllipsisVertical";
+import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 
 const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
   const [isLaneTitleEditable, setIsLaneTitleEditable] = useState(false);
@@ -115,8 +117,21 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
             </div>
           )}
         </div>
-        <span className="text-slate-400 font-bold cursor-pointer">
-          <PlusIcon />
+        <span className="text-slate-400 cursor-pointer font-normal">
+          <Menu
+            menuButton={
+              <MenuButton>
+                <EllipsisVertical />
+              </MenuButton>
+            }
+          >
+            <MenuItem className={"hover:bg-light hover:text-slate-800"}>
+              New Task
+            </MenuItem>
+            <MenuItem className={"hover:bg-light hover:text-slate-800"}>
+              Delete
+            </MenuItem>
+          </Menu>
         </span>
       </div>
 

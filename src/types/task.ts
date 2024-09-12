@@ -21,4 +21,7 @@ export interface Task {
   priority: Priority;
   tags: Tag;
   estimate: string;
+  createdAt: Date;
+  updatedAt?: Date;
+  subtasks?: Task[];
 }

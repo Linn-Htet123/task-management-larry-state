@@ -5,12 +5,17 @@ import StatusPill from "../common/pill/StatusPill";
 import { Task } from "@/types/task";
 import PriorityPill from "../common/pill/PriorityPill";
 import Ellipsis from "@/icons/Ellipsis";
+import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
+import { useState } from "react";
+import Drawer from "react-modern-drawer";
 
 interface Props {
   task: Task;
 }
 
 const TaskCard = ({ task }: Props) => {
+  const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
+
   const {
     setNodeRef,
     attributes,
@@ -30,6 +35,10 @@ const TaskCard = ({ task }: Props) => {
   const style = {
     transition,
     transform: CSS.Transform.toString(transform),
+  };
+
+  const toggleDrawer = () => {
+    setIsDetailsDrawerOpen((prev) => !prev);
   };
 
   if (isDragging) {
@@ -54,9 +63,17 @@ const TaskCard = ({ task }: Props) => {
       {...attributes}
       {...listeners}
       onClick={() => {
-        alert("helo oncard");
+        toggleDrawer();
       }}
     >
+      <Drawer
+        open={isDetailsDrawerOpen}
+        onClose={toggleDrawer}
+        direction="right"
+        style={{ width: "500px", maxWidth: "500px" }}
+      >
+        <div className="p-5">Hello World</div>
+      </Drawer>
       <Card className="w-full rounded-md shadow-sm border border-slate-100">
         <div className="h-full flex flex-col justify-between">
           <div className="flex flex-col">
@@ -67,14 +84,25 @@ const TaskCard = ({ task }: Props) => {
                 </PriorityPill>
                 <span className="text-sm text-slate-400">{task.estimate}</span>
               </div>
-              <div
-                className="text-slate-400"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  alert("helo");
-                }}
-              >
-                <Ellipsis />
+              <div className="text-slate-400">
+                <Menu
+                  menuButton={
+                    <MenuButton
+                      onClick={(e) => {
+                        e.stopPropagation(); // Prevent parent onClick from firing
+                      }}
+                    >
+                      <Ellipsis />
+                    </MenuButton>
+                  }
+                >
+                  <MenuItem className={"hover:bg-light hover:text-slate-800"}>
+                    Details
+                  </MenuItem>
+                  <MenuItem className={"hover:bg-light hover:text-slate-800"}>
+                    Delete
+                  </MenuItem>
+                </Menu>
               </div>
             </span>
             <p className="font-semibold text-slate-700 pr-5 mb-2 text-[18px] -tracking-tighter leading-tight">

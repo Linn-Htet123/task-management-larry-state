@@ -1,7 +1,7 @@
 import getRandomAccent from "@/utils/getRandomAccentColor";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
-const StatusPill = ({ children }: { children: React.ReactNode }) => {
+const StatusPill = React.memo(({ children }: { children: React.ReactNode }) => {
   const getAccentColors = useMemo(() => getRandomAccent(), []);
   return (
     <span
@@ -10,6 +10,6 @@ const StatusPill = ({ children }: { children: React.ReactNode }) => {
       {children}
     </span>
   );
-};
+});
 
 export default StatusPill;

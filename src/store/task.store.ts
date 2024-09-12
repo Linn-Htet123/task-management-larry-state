@@ -19,6 +19,7 @@ const useTaskStore = (): TaskStore => {
         tags: ["API"],
         priority: "Urgent",
         estimate: "4h",
+        createdAt: new Date(),
       },
       {
         id: 6,
@@ -29,6 +30,7 @@ const useTaskStore = (): TaskStore => {
         tags: ["API"],
         priority: "High",
         estimate: "4h",
+        createdAt: new Date(),
       },
       {
         id: 5,
@@ -39,6 +41,7 @@ const useTaskStore = (): TaskStore => {
         tags: ["Backend", "API"],
         priority: "Low",
         estimate: "4h",
+        createdAt: new Date(),
       },
     ],
     isPersist: true,
