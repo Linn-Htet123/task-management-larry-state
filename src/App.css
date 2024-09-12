@@ -19,6 +19,7 @@
   --accent-8-text: #64a86b;
   --light: #f6f7fa;
 }
+
 body {
   @apply bg-light;
 }

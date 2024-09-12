@@ -23,5 +23,6 @@ export interface Task {
   estimate: string;
   createdAt: Date;
   updatedAt?: Date;
+  links?: string;
   subtasks?: Task[];
 }

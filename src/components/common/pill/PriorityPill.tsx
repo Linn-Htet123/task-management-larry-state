@@ -8,11 +8,11 @@ interface PriorityPillProps {
 }
 
 const PriorityPill = ({ priority, children }: PriorityPillProps) => {
-  const { border, text } = getPriorityClasses(priority);
+  const { bg, text } = getPriorityClasses(priority);
 
   return (
     <span
-      className={`${text} bg-light border ${border} rounded-md px-3 py-1 text-xs font-medium inline`}
+      className={`${text} ${bg} rounded-md px-3 py-1 text-xs font-medium inline`}
     >
       {children}
     </span>

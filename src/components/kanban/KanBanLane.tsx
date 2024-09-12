@@ -1,5 +1,5 @@
 import PlusIcon from "@/icons/PlusIcon";
-import TaskCard from "./TaskCard";
+import TaskCard from "../task/TaskCard";
 import { SortableContext, useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import { Lane } from "@/types/lane";
@@ -31,6 +31,7 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
       type: "Lane",
       lane,
     },
+    disabled: isLaneTitleEditable,
   });
 
   const style = {
@@ -95,12 +96,12 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
         {...listeners}
       >
         <div className="flex gap-3 items-center">
-          <h3 className="font-semibold text-slate-400 text-sm">
+          <h3 className="font-semibold text-slate-400 text-xs rounded-full w-5 h-5 text-center flex justify-center items-center pb-[2px] bg-secondary">
             {tasks.length}
           </h3>
           {!isLaneTitleEditable ? (
             <button onClick={handleEditLaneName}>
-              <h3 className="font-semibold text-slate-400 text-sm cursor-text uppercase">
+              <h3 className="font-semibold text-slate-400 text-sm cursor-text uppercase w-56 max-w-56 text-start truncate overflow-hidden whitespace-nowrap">
                 {laneName}
               </h3>
             </button>
@@ -143,7 +144,7 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
         {tasks.map((task) => {
           if (task.laneId !== lane.id) return null;
           return (
-            <div className="w-[350px]" key={task.id}>
+            <div className="w-[350px] h-min" key={task.id}>
               <TaskCard task={task} />
             </div>
           );

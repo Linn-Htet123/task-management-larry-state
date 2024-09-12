@@ -17,7 +17,7 @@ import { Lane } from "@/types/lane";
 import { createPortal } from "react-dom";
 import useTaskStore from "@/store/task.store";
 import { Task } from "@/types/task";
-import TaskCard from "./TaskCard";
+import TaskCard from "../task/TaskCard";
 
 const KanBanBoard = () => {
   const { lanes, setLanes } = useLaneStore();

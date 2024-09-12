@@ -4,6 +4,7 @@ import Button from "../button/Button";
 import { v4 as uuid } from "uuid";
 import useLaneStore from "@/store/lane.store";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const AddLaneModal = ({
   isOpen,
@@ -25,6 +26,7 @@ const AddLaneModal = ({
         },
       ];
     });
+    toast.success(`${newLaneName} added successfully`);
     toggleModal();
   };
 
