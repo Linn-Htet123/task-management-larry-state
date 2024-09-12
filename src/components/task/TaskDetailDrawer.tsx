@@ -7,6 +7,7 @@ import SelectBox from "../common/select/SelectBox";
 import useTaskStore from "@/store/task.store";
 import { toast } from "react-toastify";
 import useLaneStore from "@/store/lane.store";
+import dayjs from "dayjs";
 
 const TaskDetailDrawer = ({ task }: { task: Task }) => {
   const { setTasks } = useTaskStore();
@@ -105,6 +106,7 @@ const TaskDetailDrawer = ({ task }: { task: Task }) => {
               <ClipBoard />
             </div>
           </div>
+
           <SelectBox
             onChange={handleOnStatusChange}
             options={lanes}
@@ -112,6 +114,11 @@ const TaskDetailDrawer = ({ task }: { task: Task }) => {
             placeholder="Status"
           />
         </div>
+        {task.createdAt && (
+          <div className="text-sm text-slate-400 mb-3">
+            {dayjs(task.createdAt).format("DD MMMM YYYY, dddd")}
+          </div>
+        )}
 
         {!isTitleEditable ? (
           <p
