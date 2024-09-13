@@ -27,7 +27,11 @@ const SelectBox: React.FC<SelectBoxProps> = ({
           {placeholder}
         </option>
         {options.map((option, index) => (
-          <option key={index} value={option.id}>
+          <option
+            key={index}
+            value={option.id}
+            className="text-slate-700 hover:bg-light font-normal"
+          >
             {option.name}
           </option>
         ))}

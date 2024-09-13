@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import Card from "../common/card/Card";
 import { CSS } from "@dnd-kit/utilities";
-import StatusPill from "../common/pill/StatusPill";
+// import StatusPill from "../common/pill/StatusPill";
 import { Task } from "@/types/task";
 import PriorityPill from "../common/pill/PriorityPill";
 import Ellipsis from "@/icons/Ellipsis";
