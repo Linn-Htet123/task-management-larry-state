@@ -29,7 +29,20 @@ const useTaskStore = (): TaskStore => {
             tags: ["API"],
             priority: "Important",
             estimate: "4h",
-            subtasks: [],
+            subtasks: [
+              {
+                id: 100,
+                laneId: 1,
+                title: "Wflkajdkfaslkfjsaling Two",
+                description: "3 api route need create. 3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.3 api route need create.",
+                status: "Frontend",
+                tags: ["API"],
+                priority: "Urgent",
+                estimate: "4h",
+                subtasks: [],
+                createdAt: new Date(),
+              }
+            ],
             createdAt: new Date(),
           },
           {

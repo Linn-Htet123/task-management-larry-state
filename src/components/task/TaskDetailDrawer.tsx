@@ -8,6 +8,9 @@ import useTaskStore from "@/store/task.store";
 import { toast } from "react-toastify";
 import useLaneStore from "@/store/lane.store";
 import dayjs from "dayjs";
+import { Link } from "react-router-dom";
+import { ID } from "@/types";
+import CheckIcon from "@/icons/CheckIcon";
 
 const TaskDetailDrawer = ({ task }: { task: Task }) => {
   const { setTasks } = useTaskStore();
@@ -18,6 +21,7 @@ const TaskDetailDrawer = ({ task }: { task: Task }) => {
   const [tempTitle, setTempTitle] = useState(task.title);
   const [tempDescription, setTempDescription] = useState(task.description);
   const [tempStatus, setTempStatus] = useState(task.laneId);
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     // Ensure tempStatus is updated when task.laneId changes
@@ -94,16 +98,41 @@ const TaskDetailDrawer = ({ task }: { task: Task }) => {
     }
   };
 
+  const handleCopyLink = async (id: ID) => {
+    try {
+      const url = `${window.location.origin}/task/${id}`;
+      await navigator.clipboard.writeText(url);
+
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 2000);
+
+      toast.success("Link copied to clipboard!", { autoClose: 1000 });
+    } catch (err) {
+      // Handle any errors that occur during the copy operation
+      console.error("Failed to copy text: ", err);
+      toast.error("Failed to copy link.");
+    }
+  };
+
   return (
     <div className="p-5 flex flex-col justify-between h-full">
       <div>
         <div className="flex justify-between items-center mb-5">
           <div className="flex items-center gap-2 mb-3">
-            <div className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer">
+            <Link
+              to={`/task/${task.id}`}
+              className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer"
+            >
               <LinkIcon />
-            </div>
-            <div className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer">
-              <ClipBoard />
+            </Link>
+            <div
+              className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer"
+              onClick={() => handleCopyLink(task.id)}
+            >
+              {!isCopied && <ClipBoard />}
+              {isCopied && <CheckIcon />}
             </div>
           </div>
 
