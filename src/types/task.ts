@@ -17,7 +17,6 @@ export interface Task {
   laneId: ID;
   title: string;
   description: string;
-  status: string;
   priority: Priority;
   tags: Tag;
   estimate: string;

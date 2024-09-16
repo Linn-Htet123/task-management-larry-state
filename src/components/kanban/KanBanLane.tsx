@@ -100,7 +100,10 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
             {tasks.length}
           </h3>
           {!isLaneTitleEditable ? (
-            <button onClick={handleEditLaneName}>
+            <button
+              onClick={handleEditLaneName}
+              className=" hover:bg-light p-1"
+            >
               <h3 className="font-semibold text-slate-400 text-sm cursor-text uppercase w-56 max-w-56 text-start truncate overflow-hidden whitespace-nowrap">
                 {laneName}
               </h3>

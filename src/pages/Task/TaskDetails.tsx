@@ -1,54 +1,35 @@
+import CopyLinkButton from "@/components/common/copy/CopyLink";
+import FormattedDate from "@/components/common/formattedDate";
+import PriorityPill from "@/components/common/pill/PriorityPill";
+import StatusPill from "@/components/common/pill/StatusPill";
+import ChangeTaskStatus from "@/components/task/ChangeTaskStatus";
+import SubTasks from "@/components/task/SubTasks";
+import TaskDescription from "@/components/task/TaskDescription";
+import TaskEstimate from "@/components/task/TaskEstimate";
+import TaskStatus from "@/components/task/TaskStatus";
+import TaskTitle from "@/components/task/TaskTitle";
+import BackButton from "@/icons/BackButton";
 import useTaskStore from "@/store/task.store";
 import { Task } from "@/types/task";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-
-// Recursive component to display subtasks and their nested subtasks
-const SubtaskList = ({ subtasks }: { subtasks: Task[] }) => {
-  return (
-    <ul className="list-disc list-inside ml-5">
-      {subtasks.map((subtask) => (
-        <li key={subtask.id} className="mb-2">
-          <div className="flex justify-between items-center">
-            <div>
-              <p className="font-medium">{subtask.title}</p>
-              <p className="text-sm text-gray-600">{subtask.description}</p>
-            </div>
-            <div className="text-right">
-              <p>
-                <strong>Status:</strong> {subtask.status}
-              </p>
-              <p>
-                <strong>Priority:</strong> {subtask.priority}
-              </p>
-            </div>
-          </div>
-
-          {/* Check if the subtask has nested subtasks */}
-          {subtask.subtasks && subtask.subtasks.length > 0 && (
-            <SubtaskList subtasks={subtask.subtasks} />
-          )}
-        </li>
-      ))}
-    </ul>
-  );
-};
+import { useNavigate, useParams } from "react-router-dom";
 
 const TaskDetails = () => {
   const { id } = useParams<{ id: string }>();
   const [task, setTask] = useState<Task | null>(null);
   const { tasks } = useTaskStore();
+  const navigate = useNavigate();
 
   // Helper function to find the task or subtask by id recursively
   const findTaskById = (tasks: Task[], id: number): Task | null => {
     for (let task of tasks) {
-      if (task.id === id) return task; // Found task
+      if (task.id === id) return task;
       if (task.subtasks && task.subtasks.length > 0) {
-        const foundSubtask = findTaskById(task.subtasks, id); // Check subtasks
-        if (foundSubtask) return foundSubtask; // Found subtask
+        const foundSubtask = findTaskById(task.subtasks, id);
+        if (foundSubtask) return foundSubtask;
       }
     }
-    return null; // Not found
+    return null;
   };
 
   useEffect(() => {
@@ -65,32 +46,47 @@ const TaskDetails = () => {
   }
 
   return (
-    <div className="flex-1 h-[calc(100dvh - 60px)] bg-white m-3 rounded-lg p-5">
-      <h1 className="text-2xl font-bold">{task.title}</h1>
-      <p className="text-lg">{task.description}</p>
-      <p>
-        <strong>Status:</strong> {task.status}
-      </p>
-      <p>
-        <strong>Priority:</strong> {task.priority}
-      </p>
-      <p>
-        <strong>Estimate:</strong> {task.estimate}
-      </p>
-      <p>
-        <strong>Tags:</strong> {task.tags.join(", ")}
-      </p>
-      <p>
-        <strong>Created At:</strong>{" "}
-        {new Date(task.createdAt).toLocaleDateString()}
-      </p>
-
-      {/* Subtasks Section */}
-      {task.subtasks && task.subtasks.length > 0 ? (
-        <div className="mt-5">
-          <h2 className="text-xl font-semibold mb-3">Subtasks:</h2>
-          <SubtaskList subtasks={task.subtasks} />
+    <div className="flex-1 h-min min-w-fit bg-white m-3 rounded-lg p-5">
+      <div onClick={() => navigate(-1)} className="pb-5 cursor-pointer">
+        <BackButton />
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <TaskTitle task={task} />
+          <CopyLinkButton taskId={task.id} />
         </div>
+        <ChangeTaskStatus task={task} />
+      </div>
+      <TaskDescription task={task} />
+      <div className="grid grid-cols-2 gap-y-3 w-[35%] my-8">
+        <p className="font-medium text-slate-400">Status:</p>
+        <TaskStatus task={task} />
+
+        <p className="font-medium text-slate-400">Priority:</p>
+        <span>
+          <PriorityPill priority={task.priority}>{task.priority}</PriorityPill>
+        </span>
+
+        <p className="font-medium text-slate-400">Estimate:</p>
+        <TaskEstimate task={task} />
+
+        <p className="font-medium text-slate-400">Tags:</p>
+
+        <p className="text-slate-600">
+          {Array.isArray(task.tags) &&
+            task.tags?.map((tag) => (
+              <span className="mr-2">
+                <StatusPill key={tag}>{tag}</StatusPill>
+              </span>
+            ))}
+        </p>
+
+        <p className="font-medium text-slate-400">Created At:</p>
+        <FormattedDate date={task.createdAt} />
+      </div>
+
+      {task.subtasks && task.subtasks.length > 0 ? (
+        <SubTasks subtasks={task.subtasks} />
       ) : (
         <p className="mt-5 text-gray-500">No subtasks available</p>
       )}

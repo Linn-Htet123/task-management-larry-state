@@ -21,7 +21,7 @@ const Board = () => {
         <div className="flex justify-between items-center">
           <CardTitle className="text-3xl">Board</CardTitle>
           <Button
-            className="flex items-center gap-3 bg-primary"
+            className="flex items-center gap-3 bg-secondary"
             onClick={toggleLaneModal}
           >
             <PlusIcon />
