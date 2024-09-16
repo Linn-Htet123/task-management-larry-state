@@ -1,5 +1,5 @@
 import CopyLinkButton from "@/components/common/copy/CopyLink";
-import FormattedDate from "@/components/common/formattedDate";
+import FormattedDate from "@/components/common/FormattedDate";
 import PriorityPill from "@/components/common/pill/PriorityPill";
 import StatusPill from "@/components/common/pill/StatusPill";
 import ChangeTaskStatus from "@/components/task/ChangeTaskStatus";
