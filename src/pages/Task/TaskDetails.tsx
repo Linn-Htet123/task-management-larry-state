@@ -20,7 +20,6 @@ const TaskDetails = () => {
   const { tasks } = useTaskStore();
   const navigate = useNavigate();
 
-  // Helper function to find the task or subtask by id recursively
   const findTaskById = (tasks: Task[], id: number): Task | null => {
     for (let task of tasks) {
       if (task.id === id) return task;
@@ -34,7 +33,6 @@ const TaskDetails = () => {
 
   useEffect(() => {
     if (id && Array.isArray(tasks)) {
-      // Ensure tasks is an array
       const taskId = parseInt(id);
       const foundTask = findTaskById(tasks, taskId);
       setTask(foundTask);
