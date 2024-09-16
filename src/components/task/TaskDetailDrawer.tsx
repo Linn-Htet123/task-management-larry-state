@@ -7,8 +7,8 @@ import TaskTitle from "./TaskTitle";
 import TaskDescription from "./TaskDescription";
 import SubTasks from "./SubTasks";
 import TaskEstimate from "./TaskEstimate";
-import FormattedDate from "../common/formattedDate";
 import LinkIcon from "@/icons/LinkIcon";
+import FormattedDate from "@/components/common/formattedDate";
 
 const TaskDetailDrawer = ({ task }: { task: Task }) => {
   return (
