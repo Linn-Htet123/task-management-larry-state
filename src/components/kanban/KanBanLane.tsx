@@ -9,12 +9,14 @@ import { toast } from "react-toastify";
 import { Task } from "@/types/task";
 import EllipsisVertical from "@/icons/EllipsisVertical";
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
+import AddTaskModal from "../task/AddTaskModal";
 
 const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
   const [isLaneTitleEditable, setIsLaneTitleEditable] = useState(false);
   const [laneName, setLaneName] = useState(lane.name);
   const [tempLaneName, setTempLaneName] = useState(lane.name);
   const { setLanes } = useLaneStore();
+  const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
 
   const taskIDs = useMemo(() => tasks?.map((task) => task.id) || [], [tasks]);
 
@@ -90,6 +92,11 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
       ref={setNodeRef}
       style={style}
     >
+      <AddTaskModal
+        open={isAddTaskOpen}
+        onClose={() => setIsAddTaskOpen(false)}
+        laneId={lane.id}
+      />
       <div
         className="flex justify-between items-center px-4 py-2 border border-slate-100 shadow-sm mb-2 cursor-grab bg-white rounded-lg"
         {...attributes}
@@ -139,7 +146,10 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
         </span>
       </div>
 
-      <div className="w-full text-primary flex gap-4 items-center py-1 justify-center rounded-xl border-2 border-dotted border-primary text-center bg-secondary cursor-pointer">
+      <div
+        className="w-full text-primary flex gap-4 items-center py-1 justify-center rounded-xl border-2 border-dotted border-primary text-center bg-secondary cursor-pointer"
+        onClick={() => setIsAddTaskOpen(true)}
+      >
         <PlusIcon />
         Add Task
       </div>

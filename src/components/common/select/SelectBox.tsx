@@ -1,21 +1,23 @@
-import { Lane } from "@/types/lane";
-import React from "react";
+export interface Option {
+  id: string;
+  name: string;
+}
 
-interface SelectBoxProps {
-  options: Lane[];
+interface SelectBoxProps<T extends Option> {
+  options: T[];
   value: string;
   onChange: (value: string) => void;
   placeholder?: string;
   className?: string;
 }
 
-const SelectBox: React.FC<SelectBoxProps> = ({
+const SelectBox = <T extends Option>({
   options,
   value,
   onChange,
   placeholder = "Select an option",
   className = "",
-}) => {
+}: SelectBoxProps<T>) => {
   return (
     <div className={`relative ${className}`}>
       <select

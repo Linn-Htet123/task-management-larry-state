@@ -1,6 +1,5 @@
 import { Lane } from "@/types/lane";
 import { createStore } from "larry-state";
-// import { v4 as uuid } from "uuid";
 
 type LaneStore = {
   lanes: Lane[];
@@ -10,16 +9,7 @@ type LaneStore = {
 const useLaneStore = (): LaneStore => {
   const { value: lanes, updateValue: setLanes } = createStore<Lane[]>({
     name: "lanes",
-    defaultValue: [
-      {
-        id: 1,
-        name: "TO DO",
-      },
-      {
-        id: 2,
-        name: "IN PROGRESS",
-      },
-    ],
+    defaultValue: [],
     isPersist: true,
   });
 

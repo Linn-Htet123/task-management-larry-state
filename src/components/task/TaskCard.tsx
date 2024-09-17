@@ -1,7 +1,7 @@
 import { useSortable } from "@dnd-kit/sortable";
 import Card from "../common/card/Card";
 import { CSS } from "@dnd-kit/utilities";
-// import StatusPill from "../common/pill/StatusPill";
+import StatusPill from "../common/pill/StatusPill";
 import { Task } from "@/types/task";
 import PriorityPill from "../common/pill/PriorityPill";
 import Ellipsis from "@/icons/Ellipsis";
@@ -11,6 +11,9 @@ import Drawer from "react-modern-drawer";
 import CheveronDouble from "@/icons/CheveronDouble";
 import TaskDetailDrawer from "./TaskDetailDrawer";
 import SubTaskIcon from "@/icons/SubTaskIcon";
+import TaskEstimate from "./TaskEstimate";
+import TaskTags from "./TaskTags";
+import DeleteTaskWrapper from "./DeleteTaskWrapper";
 
 interface Props {
   task: Task;
@@ -100,11 +103,11 @@ const TaskCard = ({ task }: Props) => {
             <div className="flex flex-col">
               <span className="mb-2 flex justify-between items-center">
                 <div className="flex items-center gap-3">
-                  {/* <PriorityPill priority={task.priority}>
+                  <PriorityPill priority={task.priority}>
                     {task.priority}
-                  </PriorityPill> */}
+                  </PriorityPill>
                   <span className="text-sm text-slate-400">
-                    {task.estimate}
+                    <TaskEstimate task={task} />
                   </span>
                 </div>
                 <div className="text-slate-400">
@@ -115,8 +118,15 @@ const TaskCard = ({ task }: Props) => {
                       </MenuButton>
                     }
                   >
-                    <MenuItem className="hover:bg-light hover:text-slate-800">
-                      Delete
+                    <MenuItem
+                      className="hover:bg-light hover:text-slate-800"
+                      onClick={() => {
+                        setIsDetailsDrawerOpen(false);
+                      }}
+                    >
+                      <DeleteTaskWrapper taskId={task.id}>
+                        Delete
+                      </DeleteTaskWrapper>
                     </MenuItem>
                   </Menu>
                 </div>
@@ -129,14 +139,10 @@ const TaskCard = ({ task }: Props) => {
               </p>
             </div>
             <div className="flex justify-between items-end mt-4">
-              {/* <div className="flex flex-wrap gap-2 mt-4">
-                {task.tags.map((tag) => (
-                  <StatusPill key={tag}>{tag}</StatusPill>
-                ))}
-              </div> */}
-              <PriorityPill priority={task.priority}>
-                {task.priority}
-              </PriorityPill>
+              <div className="flex flex-wrap gap-2 mt-4">
+                <TaskTags tags={task.tags} />
+              </div>
+
               {task.subtasks?.length && (
                 <span className="text-slate-400 text-xs flex gap-1 items-center ">
                   <SubTaskIcon />

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Task } from "@/types/task";
-import SelectBox from "../common/select/SelectBox";
+import SelectBox, { Option } from "../common/select/SelectBox";
 import { toast } from "react-toastify";
 import useLaneStore from "@/store/lane.store";
 import useTask from "@/hooks/useTask";
@@ -36,7 +36,7 @@ const ChangeTaskStatus = ({ task }: ChangeTaskStatusProps) => {
   return (
     <SelectBox
       onChange={handleOnChangeTaskStatus}
-      options={lanes || []}
+      options={(lanes as Option[]) || []}
       value={tempStatus as string}
       placeholder="Status"
     />

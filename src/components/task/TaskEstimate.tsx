@@ -46,15 +46,18 @@ const TaskEstimate = ({ task }: TaskEstimateProps) => {
           onChange={handleEstimateChange}
           onKeyDown={handleKeyDown}
           onBlur={handleBlur}
-          className="text-sm text-slate-400 cursor-pointer outline-none border-0"
+          className="text-xs text-slate-400 cursor-pointer outline-none border-0"
           autoFocus
         />
       ) : (
         <div
-          onClick={() => setIsEditingEstimate(true)}
-          className="text-sm text-slate-400 hover:bg-light p-1 cursor-text"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsEditingEstimate(true);
+          }}
+          className="text-xs text-slate-400 hover:bg-light p-1 cursor-text"
         >
-          {estimate}
+          {estimate}h
         </div>
       )}
     </div>
