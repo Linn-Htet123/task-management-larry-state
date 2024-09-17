@@ -124,9 +124,9 @@ const TaskCard = ({ task }: Props) => {
                         setIsDetailsDrawerOpen(false);
                       }}
                     >
-                      <DeleteTaskWrapper taskId={task.id}>
+                      {/* <DeleteTaskWrapper taskId={task.id}>
                         Delete
-                      </DeleteTaskWrapper>
+                      </DeleteTaskWrapper> */}
                     </MenuItem>
                   </Menu>
                 </div>

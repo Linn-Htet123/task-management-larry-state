@@ -7,9 +7,11 @@ import SubTasks from "@/components/task/SubTasks";
 import TaskDescription from "@/components/task/TaskDescription";
 import TaskEstimate from "@/components/task/TaskEstimate";
 import TaskStatus from "@/components/task/TaskStatus";
+import TaskTags from "@/components/task/TaskTags";
 import TaskTitle from "@/components/task/TaskTitle";
 import BackButton from "@/icons/BackButton";
 import useTaskStore from "@/store/task.store";
+import { ID } from "@/types";
 import { Task } from "@/types/task";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -20,7 +22,7 @@ const TaskDetails = () => {
   const { tasks } = useTaskStore();
   const navigate = useNavigate();
 
-  const findTaskById = (tasks: Task[], id: number): Task | null => {
+  const findTaskById = (tasks: Task[], id: ID): Task | null => {
     for (let task of tasks) {
       if (task.id === id) return task;
       if (task.subtasks && task.subtasks.length > 0) {
@@ -33,12 +35,11 @@ const TaskDetails = () => {
 
   useEffect(() => {
     if (id && Array.isArray(tasks)) {
-      const taskId = parseInt(id);
-      const foundTask = findTaskById(tasks, taskId);
+      const foundTask = findTaskById(tasks, id);
       setTask(foundTask);
     }
   }, [id, tasks]);
-
+  console.log(task);
   if (!task) {
     return <div>Task not found</div>;
   }
@@ -71,12 +72,7 @@ const TaskDetails = () => {
         <p className="font-medium text-slate-400">Tags:</p>
 
         <p className="text-slate-600">
-          {Array.isArray(task.tags) &&
-            task.tags?.map((tag) => (
-              <span className="mr-2">
-                <StatusPill key={tag}>{tag}</StatusPill>
-              </span>
-            ))}
+          <TaskTags tags={task.tags} />
         </p>
 
         <p className="font-medium text-slate-400">Created At:</p>
