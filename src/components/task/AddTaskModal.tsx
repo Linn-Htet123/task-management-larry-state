@@ -51,6 +51,7 @@ const AddTaskModal = ({ open, onClose, laneId, taskId }: Props) => {
     setTaskTitle("");
     setTaskDescription("");
     setTaskEstimate("");
+    setTaskTags([]);
     setTaskPriority(undefined);
   };
 
@@ -81,7 +82,9 @@ const AddTaskModal = ({ open, onClose, laneId, taskId }: Props) => {
         <div>
           <Input
             placeholder="Estimation (in hours)"
-            type="text"
+            type="number"
+            min={1}
+            max={730.001}
             id="estimate"
             value={taskEstimate}
             onChange={(e) => setTaskEstimate(e.target.value)}

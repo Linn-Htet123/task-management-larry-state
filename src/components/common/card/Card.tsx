@@ -3,13 +3,18 @@ import CardHeader from "./CardHeader";
 import CardTitle from "./CardTitle";
 import CardBody from "./CardBody";
 
-interface CardProps {
-  title?: React.ReactNode;
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  title?: string;
   children: React.ReactNode;
   className?: string;
 }
 
-const Card: React.FC<CardProps> = ({ title, children, className = "" }) => {
+const Card: React.FC<CardProps> = ({
+  title,
+  children,
+  className = "",
+  onClick,
+}) => {
   return (
     <div className={`bg-white rounded-lg${className}`}>
       {title && (
@@ -17,7 +22,7 @@ const Card: React.FC<CardProps> = ({ title, children, className = "" }) => {
           <CardTitle>{title}</CardTitle>
         </CardHeader>
       )}
-      <CardBody>{children}</CardBody>
+      <CardBody onClick={onClick}>{children}</CardBody>
     </div>
   );
 };

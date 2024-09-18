@@ -9,6 +9,8 @@ import SubTasks from "./SubTasks";
 import TaskEstimate from "./TaskEstimate";
 import LinkIcon from "@/icons/LinkIcon";
 import FormattedDate from "@/components/common/FormattedDate";
+import DeleteTaskWrapper from "./DeleteTaskWrapper";
+import TrashIcon from "@/icons/TrashIcon";
 
 const TaskDetailDrawer = ({ task }: { task: Task }) => {
   return (
@@ -19,19 +21,26 @@ const TaskDetailDrawer = ({ task }: { task: Task }) => {
             <GoToDetailTask taskId={task.id}>
               <LinkIcon />
             </GoToDetailTask>
-            <CopyLinkButton taskId={task.id} />
+            {/* <CopyLinkButton taskId={task.id} /> */}
+            <DeleteTaskWrapper taskId={task.id}>
+              <div className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer">
+                <TrashIcon />
+              </div>
+            </DeleteTaskWrapper>
           </div>
 
           <ChangeTaskStatus task={task} />
         </div>
         {task.createdAt && <FormattedDate date={task.createdAt} />}
 
-        <TaskTitle task={task} />
-
-        <div className="my-4 flex items-center gap-3">
-          <PriorityPill priority={task.priority}>{task.priority}</PriorityPill>
+        <div className="mb-4 flex items-center gap-3">
+          <PriorityPill priority={task.priority} isEditable taskId={task.id}>
+            {task.priority}
+          </PriorityPill>
           <TaskEstimate task={task} />
         </div>
+
+        <TaskTitle task={task} />
 
         <TaskDescription task={task} />
       </div>

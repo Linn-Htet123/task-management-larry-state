@@ -11,7 +11,7 @@ const TaskTags = React.memo(({ tags, removeTag }: Props) => {
   const taskTags = useMemo(() => tags, [tags]);
 
   return (
-    <div>
+    <>
       {taskTags.length > 0 && (
         <span className="flex gap-2 flex-wrap">
           {taskTags.map((tag) => (
@@ -21,7 +21,7 @@ const TaskTags = React.memo(({ tags, removeTag }: Props) => {
           ))}
         </span>
       )}
-    </div>
+    </>
   );
 });
 

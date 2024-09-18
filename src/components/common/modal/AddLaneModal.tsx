@@ -16,7 +16,8 @@ const AddLaneModal = ({
   const { setLanes } = useLaneStore();
   const [newLaneName, setNewLaneName] = useState("");
 
-  const handleAddLane = () => {
+  const handleAddLane = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     setLanes((prev) => {
       return [
         ...prev,
@@ -32,9 +33,9 @@ const AddLaneModal = ({
 
   return (
     <div>
-      <Modal open={isOpen} onClose={toggleModal}>
-        <form className="py-8">
-          <label htmlFor="#newLane" className="text-slate-400">
+      <Modal open={isOpen} onClose={toggleModal} center>
+        <form className="py-8" onSubmit={handleAddLane}>
+          <label htmlFor="newLane" className="text-slate-400">
             Add new lane
           </label>
           <Input
@@ -45,9 +46,7 @@ const AddLaneModal = ({
             onChange={(e) => setNewLaneName(e.target.value)}
           />
           <div className="flex justify-end items-center">
-            <Button type="submit" onClick={handleAddLane}>
-              Add
-            </Button>
+            <Button type="submit">Add</Button>
           </div>
         </form>
       </Modal>

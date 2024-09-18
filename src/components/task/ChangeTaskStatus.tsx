@@ -19,11 +19,9 @@ const ChangeTaskStatus = ({ task }: ChangeTaskStatusProps) => {
   }, [task.laneId, lanes]);
 
   const handleOnChangeTaskStatus = (selectedId: string) => {
-    console.log("Selected Lane ID:", selectedId);
     const selectedLane = lanes?.find((lane) => lane.id == selectedId);
 
     if (selectedLane) {
-      console.log("Selected Lane:", selectedLane);
       updateTask({ ...task, laneId: selectedLane.id });
       setTempStatus(selectedLane.id);
       toast.success("Status updated successfully", { autoClose: 1500 });

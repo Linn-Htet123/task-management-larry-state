@@ -1,5 +1,6 @@
 import { Task } from "@/types/task";
 import useTaskStore from "@/store/task.store";
+import { ID } from "@/types";
 
 const updateTaskRecursively = (tasks: Task[], updatedTask: Task): Task[] => {
     return tasks.map(task => {
@@ -25,7 +26,11 @@ const useTask = () => {
         setTasks((prevTasks) => updateTaskRecursively(prevTasks, updatedTask));
     };
 
-    return { tasks, updateTask };
+    const deleteTask = (taskId: ID) => {
+        setTasks((prev) => prev.filter((task => task.id !== taskId)))
+    }
+
+    return { tasks, updateTask, deleteTask };
 };
 
 export default useTask;

@@ -1,8 +1,8 @@
 import CopyLinkButton from "@/components/common/copy/CopyLink";
 import FormattedDate from "@/components/common/FormattedDate";
 import PriorityPill from "@/components/common/pill/PriorityPill";
-import StatusPill from "@/components/common/pill/StatusPill";
 import ChangeTaskStatus from "@/components/task/ChangeTaskStatus";
+import DeleteTaskWrapper from "@/components/task/DeleteTaskWrapper";
 import SubTasks from "@/components/task/SubTasks";
 import TaskDescription from "@/components/task/TaskDescription";
 import TaskEstimate from "@/components/task/TaskEstimate";
@@ -10,10 +10,11 @@ import TaskStatus from "@/components/task/TaskStatus";
 import TaskTags from "@/components/task/TaskTags";
 import TaskTitle from "@/components/task/TaskTitle";
 import BackButton from "@/icons/BackButton";
+import TrashIcon from "@/icons/TrashIcon";
 import useTaskStore from "@/store/task.store";
 import { ID } from "@/types";
 import { Task } from "@/types/task";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const TaskDetails = () => {
@@ -22,24 +23,26 @@ const TaskDetails = () => {
   const { tasks } = useTaskStore();
   const navigate = useNavigate();
 
-  const findTaskById = (tasks: Task[], id: ID): Task | null => {
-    for (let task of tasks) {
-      if (task.id === id) return task;
-      if (task.subtasks && task.subtasks.length > 0) {
-        const foundSubtask = findTaskById(task.subtasks, id);
-        if (foundSubtask) return foundSubtask;
+  const findTaskById = useCallback(
+    (tasks: Task[], id: ID): Task | null => {
+      for (const task of tasks) {
+        if (task.id === id) return task;
+        if (task.subtasks?.length) {
+          const foundSubtask = findTaskById(task.subtasks, id);
+          if (foundSubtask) return foundSubtask;
+        }
       }
-    }
-    return null;
-  };
+      return null;
+    },
+    [task, id]
+  );
 
   useEffect(() => {
     if (id && Array.isArray(tasks)) {
-      const foundTask = findTaskById(tasks, id);
-      setTask(foundTask);
+      setTask(findTaskById(tasks, id));
     }
-  }, [id, tasks]);
-  console.log(task);
+  }, [id, tasks, findTaskById]);
+
   if (!task) {
     return <div>Task not found</div>;
   }
@@ -49,12 +52,19 @@ const TaskDetails = () => {
       <div onClick={() => navigate(-1)} className="pb-5 cursor-pointer">
         <BackButton />
       </div>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="flex items-startx justify-between">
+        <div className="w-[75%] mb-4">
           <TaskTitle task={task} />
-          <CopyLinkButton taskId={task.id} />
         </div>
-        <ChangeTaskStatus task={task} />
+        <div className="flex items-center gap-3">
+          <CopyLinkButton taskId={task.id} />
+          <DeleteTaskWrapper taskId={task.id}>
+            <div className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer">
+              <TrashIcon />
+            </div>
+          </DeleteTaskWrapper>
+          <ChangeTaskStatus task={task} />
+        </div>
       </div>
       <TaskDescription task={task} />
       <div className="grid grid-cols-2 gap-y-3 w-[35%] my-8">
@@ -62,15 +72,16 @@ const TaskDetails = () => {
         <TaskStatus task={task} />
 
         <p className="font-medium text-slate-400">Priority:</p>
-        <span>
-          <PriorityPill priority={task.priority}>{task.priority}</PriorityPill>
-        </span>
+        <div className="w-min">
+          <PriorityPill priority={task.priority} isEditable taskId={task.id}>
+            {task.priority}
+          </PriorityPill>
+        </div>
 
         <p className="font-medium text-slate-400">Estimate:</p>
         <TaskEstimate task={task} />
 
         <p className="font-medium text-slate-400">Tags:</p>
-
         <p className="text-slate-600">
           <TaskTags tags={task.tags} />
         </p>
@@ -79,7 +90,7 @@ const TaskDetails = () => {
         <FormattedDate date={task.createdAt} />
       </div>
 
-      {task.subtasks && task.subtasks.length > 0 ? (
+      {task.subtasks?.length ? (
         <SubTasks subtasks={task.subtasks} />
       ) : (
         <p className="mt-5 text-gray-500">No subtasks available</p>

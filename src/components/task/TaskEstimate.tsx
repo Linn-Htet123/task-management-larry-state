@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Task } from "@/types/task";
 import useTask from "@/hooks/useTask";
 import { toast } from "react-toastify";
@@ -37,11 +37,14 @@ const TaskEstimate = ({ task }: TaskEstimateProps) => {
     setIsEditingEstimate(false);
   };
 
+  useEffect(() => {
+    setEstimate(task.estimate);
+  }, [task.estimate]);
+
   return (
     <div className="estimate-field">
       {isEditingEstimate ? (
         <input
-          type="text"
           value={estimate}
           onChange={handleEstimateChange}
           onKeyDown={handleKeyDown}
