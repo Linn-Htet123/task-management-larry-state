@@ -10,6 +10,7 @@ import { Task } from "@/types/task";
 import EllipsisVertical from "@/icons/EllipsisVertical";
 import { Menu, MenuButton, MenuItem } from "@szhsin/react-menu";
 import AddTaskModal from "../task/AddTaskModal";
+import DeleteLaneModal from "../common/modal/DeleteLaneModal";
 
 const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
   const [isLaneTitleEditable, setIsLaneTitleEditable] = useState(false);
@@ -17,6 +18,7 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
   const [tempLaneName, setTempLaneName] = useState(lane.name);
   const { setLanes } = useLaneStore();
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false);
+  const [isLaneDeleteModal, setIsLaneDeleteModal] = useState(false);
 
   const taskIDs = useMemo(() => tasks?.map((task) => task.id) || [], [tasks]);
 
@@ -97,6 +99,11 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
         onClose={() => setIsAddTaskOpen(false)}
         laneId={lane.id}
       />
+      <DeleteLaneModal
+        landeId={lane.id}
+        isOpenModal={isLaneDeleteModal}
+        setIsOpenModal={setIsAddTaskOpen}
+      />
       <div
         className="flex justify-between items-center px-4 py-2 border border-slate-100 shadow-sm mb-2 cursor-grab bg-white rounded-lg"
         {...attributes}
@@ -136,10 +143,16 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
               </MenuButton>
             }
           >
-            <MenuItem className={"hover:bg-light hover:text-slate-800"}>
+            <MenuItem
+              className={"hover:bg-light hover:text-slate-800"}
+              onClick={() => setIsAddTaskOpen(true)}
+            >
               New Task
             </MenuItem>
-            <MenuItem className={"hover:bg-light hover:text-slate-800"}>
+            <MenuItem
+              className={"hover:bg-light hover:text-slate-800"}
+              onClick={() => setIsLaneDeleteModal(true)}
+            >
               Delete
             </MenuItem>
           </Menu>
