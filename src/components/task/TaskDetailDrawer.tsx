@@ -1,7 +1,6 @@
 import { Task } from "@/types/task";
 import PriorityPill from "../common/pill/PriorityPill";
 import GoToDetailTask from "./GoToDetailTask";
-import CopyLinkButton from "../common/copy/CopyLink";
 import ChangeTaskStatus from "./ChangeTaskStatus";
 import TaskTitle from "./TaskTitle";
 import TaskDescription from "./TaskDescription";
@@ -11,6 +10,7 @@ import LinkIcon from "@/icons/LinkIcon";
 import FormattedDate from "@/components/common/FormattedDate";
 import DeleteTaskWrapper from "./DeleteTaskWrapper";
 import TrashIcon from "@/icons/TrashIcon";
+import AddSubTask from "./AddSubTask";
 
 const TaskDetailDrawer = ({ task }: { task: Task }) => {
   return (
@@ -21,7 +21,6 @@ const TaskDetailDrawer = ({ task }: { task: Task }) => {
             <GoToDetailTask taskId={task.id}>
               <LinkIcon />
             </GoToDetailTask>
-            {/* <CopyLinkButton taskId={task.id} /> */}
             <DeleteTaskWrapper taskId={task.id}>
               <div className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer">
                 <TrashIcon />
@@ -32,12 +31,14 @@ const TaskDetailDrawer = ({ task }: { task: Task }) => {
           <ChangeTaskStatus task={task} />
         </div>
         {task.createdAt && <FormattedDate date={task.createdAt} />}
-
-        <div className="mb-4 flex items-center gap-3">
-          <PriorityPill priority={task.priority} isEditable taskId={task.id}>
-            {task.priority}
-          </PriorityPill>
-          <TaskEstimate task={task} />
+        <div className="flex justify-between items-center mb-4">
+          <div className="mb-4 flex items-center gap-3">
+            <PriorityPill priority={task.priority} isEditable task={task}>
+              {task.priority}
+            </PriorityPill>
+            <TaskEstimate task={task} />
+          </div>
+          <AddSubTask task={task} showLabel />
         </div>
 
         <TaskTitle task={task} />

@@ -7,24 +7,26 @@ import Button from "../common/button/Button";
 import SelectBox from "../common/select/SelectBox";
 import { priorities, Priority, Tag, Task } from "@/types/task";
 import { ID } from "@/types";
-import useTaskStore from "@/store/task.store";
 import { v4 as uuid } from "uuid";
 import { toast } from "react-toastify";
 import TaskTagInput from "./TaskTagInput";
+import useTaskStore from "@/store/task.store";
+import useTask from "@/hooks/useTask";
 
 interface Props {
   open: boolean;
   onClose: () => void;
   laneId?: ID;
-  taskId?: ID;
+  task?: Task;
 }
-const AddTaskModal = ({ open, onClose, laneId, taskId }: Props) => {
+const AddTaskModal = ({ open, onClose, laneId, task }: Props) => {
   const { setTasks } = useTaskStore();
   const [taskTitle, setTaskTitle] = useState<string>("");
   const [taskDescription, setTaskDescription] = useState<string>("");
   const [taskEstimate, setTaskEstimate] = useState<string>("");
-  const [taskPriority, setTaskPriority] = useState<string>();
+  const [taskPriority, setTaskPriority] = useState<string>(priorities[0].id);
   const [taskTags, setTaskTags] = useState<Tag[]>([]);
+  const { updateTask } = useTask();
 
   const handleSelectPriority = (selectedId: string) => {
     setTaskPriority(selectedId);
@@ -32,11 +34,9 @@ const AddTaskModal = ({ open, onClose, laneId, taskId }: Props) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!laneId) return;
-
     const newTask: Task = {
       id: uuid(),
-      laneId,
+      laneId: laneId || undefined,
       title: taskTitle,
       description: taskDescription,
       estimate: taskEstimate,
@@ -44,7 +44,12 @@ const AddTaskModal = ({ open, onClose, laneId, taskId }: Props) => {
       createdAt: new Date(),
       tags: taskTags,
     };
-    setTasks((prevTasks) => [...prevTasks, newTask]);
+
+    if (laneId) {
+      setTasks((prevTasks) => [...prevTasks, newTask]);
+    } else if (task) {
+      updateTask({ ...task, subtasks: [newTask] });
+    }
     toast.success(newTask.title + " added successfully", { autoClose: 1500 });
 
     onClose();
@@ -52,7 +57,7 @@ const AddTaskModal = ({ open, onClose, laneId, taskId }: Props) => {
     setTaskDescription("");
     setTaskEstimate("");
     setTaskTags([]);
-    setTaskPriority(undefined);
+    setTaskPriority(priorities[0].id);
   };
 
   return (

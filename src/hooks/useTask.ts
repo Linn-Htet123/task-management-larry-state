@@ -19,6 +19,20 @@ const updateTaskRecursively = (tasks: Task[], updatedTask: Task): Task[] => {
     });
 };
 
+const deleteTaskRecursively = (tasks: Task[], taskId: ID): Task[] => {
+    return tasks
+        .filter(task => task.id !== taskId)
+        .map(task => {
+            if (task.subtasks && task.subtasks.length > 0) {
+                return {
+                    ...task,
+                    subtasks: deleteTaskRecursively(task.subtasks, taskId),
+                };
+            }
+            return task;
+        });
+};
+
 const useTask = () => {
     const { tasks, setTasks } = useTaskStore();
 
@@ -27,8 +41,8 @@ const useTask = () => {
     };
 
     const deleteTask = (taskId: ID) => {
-        setTasks((prev) => prev.filter((task => task.id !== taskId)))
-    }
+        setTasks((prevTasks) => deleteTaskRecursively(prevTasks, taskId));
+    };
 
     return { tasks, updateTask, deleteTask };
 };

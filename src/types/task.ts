@@ -27,7 +27,7 @@ export const priorities: PriorityType = [
 
 export interface Task {
   id: ID;
-  laneId: ID;
+  laneId?: ID;
   title: string;
   description: string;
   priority: Priority;

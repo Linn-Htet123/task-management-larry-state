@@ -1,6 +1,7 @@
 import CopyLinkButton from "@/components/common/copy/CopyLink";
 import FormattedDate from "@/components/common/FormattedDate";
 import PriorityPill from "@/components/common/pill/PriorityPill";
+import AddSubTask from "@/components/task/AddSubTask";
 import ChangeTaskStatus from "@/components/task/ChangeTaskStatus";
 import DeleteTaskWrapper from "@/components/task/DeleteTaskWrapper";
 import SubTasks from "@/components/task/SubTasks";
@@ -56,7 +57,11 @@ const TaskDetails = () => {
         <div className="w-[75%] mb-4">
           <TaskTitle task={task} />
         </div>
+
         <div className="flex items-center gap-3">
+          <div className="w-min">
+            <AddSubTask task={task} />
+          </div>
           <CopyLinkButton taskId={task.id} />
           <DeleteTaskWrapper taskId={task.id}>
             <div className="bg-light p-2 rounded-md font-semibold text-slate-700 w-min cursor-pointer">
@@ -73,7 +78,7 @@ const TaskDetails = () => {
 
         <p className="font-medium text-slate-400">Priority:</p>
         <div className="w-min">
-          <PriorityPill priority={task.priority} isEditable taskId={task.id}>
+          <PriorityPill priority={task.priority} isEditable task={task}>
             {task.priority}
           </PriorityPill>
         </div>

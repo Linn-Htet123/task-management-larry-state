@@ -2,26 +2,23 @@ import { priorities, Priority, Task } from "@/types/task";
 import getPriorityClasses from "@/utils/getPriorityColor";
 import React, { useState, useEffect, useRef } from "react";
 import SelectBox from "../select/SelectBox";
-import { ID } from "@/types";
-import useTaskStore from "@/store/task.store";
 import { toast } from "react-toastify";
+import useTask from "@/hooks/useTask";
 
 interface PriorityPillProps {
-  taskId?: ID;
+  task?: Task;
   priority: Priority;
   children: React.ReactNode;
   isEditable?: boolean;
 }
 
 const PriorityPill: React.FC<PriorityPillProps> = React.memo(
-  ({ taskId, priority, children, isEditable = false }) => {
+  ({ task, priority, children, isEditable = false }) => {
     const { bg, text } = getPriorityClasses(priority);
-    const [taskPriority, setTaskPriority] = useState<string | undefined>(
-      priority
-    );
+    const [taskPriority, setTaskPriority] = useState<string>(priority);
     const [isEditSelectOpen, setIsEditSelectOpen] = useState(false);
     const containerRef = useRef<HTMLDivElement>(null);
-    const { setTasks } = useTaskStore();
+    const { updateTask } = useTask();
 
     const handleOnChange = (value: string) => {
       setTaskPriority(value);
@@ -46,16 +43,10 @@ const PriorityPill: React.FC<PriorityPillProps> = React.memo(
     }, []);
 
     useEffect(() => {
-      if (taskId) {
-        setTasks((prevTasks) =>
-          prevTasks.map((task) =>
-            task.id === taskId
-              ? ({ ...task, priority: taskPriority } as Task)
-              : task
-          )
-        );
+      if (task) {
+        updateTask({ ...task, priority: taskPriority as Priority });
       }
-    }, [taskPriority, taskId]);
+    }, [taskPriority]);
 
     const toggleSelectBox = () => {
       if (isEditable) {
