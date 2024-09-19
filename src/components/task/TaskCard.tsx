@@ -114,19 +114,19 @@ const TaskCard = ({ task }: Props) => {
                       </MenuButton>
                     }
                   >
-                    <MenuItem
-                      className="hover:bg-light hover:text-slate-800"
-                      onClick={(e) => {
-                        const event = e as unknown as React.MouseEvent;
-                        if (event.stopPropagation) {
-                          event.stopPropagation();
-                        }
-                      }}
-                    >
-                      <DeleteTaskWrapper taskId={task.id}>
+                    <DeleteTaskWrapper taskId={task.id}>
+                      <MenuItem
+                        className="hover:bg-light hover:text-slate-800"
+                        onClick={(e) => {
+                          const event = e as unknown as React.MouseEvent;
+                          if (event.stopPropagation) {
+                            event.stopPropagation();
+                          }
+                        }}
+                      >
                         <p>Delete</p>
-                      </DeleteTaskWrapper>
-                    </MenuItem>
+                      </MenuItem>
+                    </DeleteTaskWrapper>
                   </Menu>
                 </div>
               </span>
