@@ -48,7 +48,7 @@ const AddTaskModal = ({ open, onClose, laneId, task }: Props) => {
     if (laneId) {
       setTasks((prevTasks) => [...prevTasks, newTask]);
     } else if (task) {
-      updateTask({ ...task, subtasks: [newTask] });
+      updateTask({ ...task, subtasks: [newTask, ...(task.subtasks || [])] });
     }
     toast.success(newTask.title + " added successfully", { autoClose: 1500 });
 
