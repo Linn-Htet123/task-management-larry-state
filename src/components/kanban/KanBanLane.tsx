@@ -101,8 +101,10 @@ const KanBanLane = ({ lane, tasks }: { lane: Lane; tasks: Task[] }) => {
       />
       <DeleteLaneModal
         landeId={lane.id}
-        isOpenModal={isLaneDeleteModal}
-        setIsOpenModal={setIsAddTaskOpen}
+        open={isLaneDeleteModal}
+        onClose={() => {
+          setIsLaneDeleteModal(false);
+        }}
       />
       <div
         className="flex justify-between items-center px-4 py-2 border border-slate-100 shadow-sm mb-2 cursor-grab bg-white rounded-lg"
